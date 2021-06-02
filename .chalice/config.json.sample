@@ -1,0 +1,19 @@
+{
+  "version": "2.0",
+  "app_name": "chase_the_show",
+  "stages": {
+    "dev": {
+      "api_gateway_stage": "api",
+      "environment_variables": {
+        "SHOW_URL": "https://www.digi24.ro/emisiuni/banii-in-miscare",
+        "SHOW_SELECTOR": "body > main > section:nth-child(2) > div.container > div > div:nth-child(1) > article",
+        "EMAIL_SENDER": "qBot <no_reply@yourdomain.tld>",
+        "EMAIL_RECIPIENT": "you@yourdomain.tld",
+        "EMAIL_ENCODING": "UTF-8",
+        "EMAIL_REGION": "eu-west-1",
+        "HTML_TEMPLATE": "chalicelib/html_body.tpl",
+        "TEXT_TEMPLATE": "chalicelib/text_body.tpl"
+      }
+    }
+  }
+}
