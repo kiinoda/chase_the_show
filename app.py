@@ -1,12 +1,14 @@
 import boto3
 import botocore.exceptions
 import os
+from logging import INFO
 from string import Template
 from requests_html import HTMLSession
 from chalice import Chalice, Cron
 
 
 app = Chalice(app_name="chase_the_show")
+app.log.setLevel(INFO)
 
 
 def get_show_info():
@@ -53,6 +55,7 @@ def send_email(recipient):
             },
             Source=sender
         )
+        app.log.info(f"email sent to {recipient}")
     except Exception as e:
         print(e)
 
