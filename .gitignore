@@ -1,5 +1,6 @@
 .chalice/deployments/
 .chalice/venv/
 .chalice/deployed/
+.chalice/config.json
 venv/
 __pycache__/
