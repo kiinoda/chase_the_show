@@ -12,33 +12,34 @@ app.log.setLevel(INFO)
 
 
 def get_show_info():
+    # returns err, description, link
     try:
+        err = 0
         session = HTMLSession()
         r = session.get(os.environ["SHOW_URL"])
         sel = os.environ["SHOW_SELECTOR"]
         show = r.html.find(sel, first=True)
         description = show.text.split(sep="\n")[0]
         link = show.links.pop()
-        return description, link
+        return err, description, link
     except Exception as e:
+        err = 1
         print(e)
+        return err, "Parsing failed", e
 
 
-def parse_template(filename, description, link):
+def parse_template(filename, description, snippet):
     with open(filename) as f:
         tpl = ''.join(f.readlines())
     template = Template(tpl)
-    body = template.substitute(description=description, link=link)
+    body = template.substitute(description=description, snippet=snippet)
     return body
 
 
-def send_email(recipient):
+def send_email(recipient, text_body, html_body):
     aws_region = os.environ["EMAIL_REGION"]
     charset = os.environ["EMAIL_ENCODING"]
     sender = os.environ["EMAIL_SENDER"]
-    description, link = get_show_info()
-    text_body = parse_template(os.environ["TEXT_TEMPLATE"], description, link)
-    html_body = parse_template(os.environ["HTML_TEMPLATE"], description, link)
     subject = description
     client = boto3.client('ses', region_name=aws_region)
     try:
@@ -62,4 +63,11 @@ def send_email(recipient):
 
 @app.schedule(Cron(10, 6, '?', '*', 'TUE-SAT', '*'))
 def deliver_it(event):
-    send_email(os.environ["EMAIL_RECIPIENT"])
+    err, description, snippet = get_show_info()
+    if err == 0:
+        text_body = parse_template(os.environ["TEXT_TEMPLATE"], description, snippet)
+        html_body = parse_template(os.environ["HTML_TEMPLATE"], description, snippet)
+    else:
+        text_body = parse_template(os.environ["ERR_TEXT_TEMPLATE"], description, snippet)
+        html_body = parse_template(os.environ["ERR_HTML_TEMPLATE"], description, snippet)
+    send_email(os.environ["EMAIL_RECIPIENT"], text_body, html_body)

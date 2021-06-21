@@ -13,7 +13,9 @@
         "EMAIL_ENCODING": "UTF-8",
         "EMAIL_REGION": "eu-west-1",
         "HTML_TEMPLATE": "chalicelib/html_body.tpl",
-        "TEXT_TEMPLATE": "chalicelib/text_body.tpl"
+        "TEXT_TEMPLATE": "chalicelib/text_body.tpl",
+        "ERR_HTML_TEMPLATE": "chalicelib/err_html_body.tpl",
+        "ERR_TEXT_TEMPLATE": "chalicelib/err_text_body.tpl"
       }
     }
   }
