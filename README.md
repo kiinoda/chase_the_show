@@ -6,7 +6,7 @@ This project uses Lambda and SES to retrieve the most recent episode of a show f
 
 AWS credentials are required. If you have a user set up, skip to next section. If you don't already have one, create an AWS IAM User with proper admin rights which will then take care of the necessary role and permissions for the Lambda when deploying.
 
-```
+```sh
 mkdir ~/.aws
 cat >> ~/.aws/config
 [default]
@@ -21,7 +21,7 @@ This project uses Chalice to handle deploying to AWS Lambda.
 
 Once you clone the repo, run the following to create a deploy environment.
 
-```
+```sh
 cd chase_the_show
 python3 -m venv venv
 . venv/bin/activate
@@ -30,12 +30,12 @@ python3 -m pip install -r requirements.txt
 
 Copy `.chalice/config.json.sample` to `.chalice/config.json`, tailor to your specific environment and run the following to deploy.
 
-```
+```sh
 chalice deploy
 ```
 
 If you want to clean up, run the following.
 
-```
+```sh
 chalice delete
 ```
